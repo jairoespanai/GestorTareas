@@ -13,10 +13,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Gestor de Tareas</title>
+        <script src="librerias/jquery.js" type="text/javascript"></script>
+        <script src="librerias/jquery-ui.js" type="text/javascript"></script>
+        <link href="librerias/jquery-ui.css" rel="stylesheet" type="text/css"/>
         <style>
             body {
                 background:url(assets/bg.png);
-                font-size:12px;
+                font-size:14px;
                 font-family:Calibri, Arial, Helvetica, sans-serif;
             }
 
@@ -61,7 +64,7 @@
                 width: 18%; 
                 float: left; 
                 border: 1px #000 solid; 
-                min-height: 400px;
+                min-height: 350px;
                 margin: 5px;
                 padding: 5px;
             }
@@ -94,6 +97,135 @@
             }
 
         </style>
+        <script>
+            $(function () {
+                $(".draggable_cola").draggable({
+                    cursor: "move",
+                    revert: "valid"
+
+                });
+
+                $("#backlog").droppable({
+                    drop: function (event, ui) {
+                        var estado = $(".draggable_cola").data("estado");
+                        if (estado == "2" || estado == "4" || estado == "5") {
+                            $(".draggable_cola").draggable("option", "revert", "valid");
+                            console.log($(".draggable_cola").data("estado"));
+                            console.log($(".draggable_cola").data("idc"));
+                        } else {
+                            $(".draggable_cola").draggable("option", "revert", "invalid");
+                            console.log($(".draggable_cola").data("estado"));
+                        }
+                    }
+                });
+                $("#proceso").droppable({
+                    drop: function (event, ui) {
+                        var estado = $(".draggable_cola").data("estado");
+                        if (estado == "1") {
+                            $(".draggable_cola").draggable("option", "revert", "invalid");
+                            $(".draggable_cola").data("estado", "2");
+                            console.log($(".draggable_cola").data("estado"));
+                            console.log($(".draggable_cola").data("idc"));
+                            var idc = $(".draggable_cola").data("idc");
+                            aprocesar(idc);
+                        } else {
+                            $(".draggable_cola").draggable("option", "revert", "valid");
+                        }
+                    }
+                });
+                $("#suspendido").droppable({
+                    drop: function (event, ui) {
+                        var estado = $(".draggable_cola").data("estado");
+                        if (estado == "1" || estado == "2") {
+                            $(".draggable_cola").draggable("option", "revert", "invalid");
+                            $(".draggable_cola").data("estado", "3");
+                            console.log($(".draggable_cola").data("estado"));
+                            console.log($(".draggable_cola").data("idc"));
+                            var idc = $(".draggable_cola").data("idc");
+                            asuspender(idc);
+                        } else {
+                            $(".draggable_cola").draggable("option", "revert", "valid");
+                        }
+                    }
+                });
+                $("#cancelado").droppable({
+                    drop: function (event, ui) {
+                        var estado = $(".draggable_cola").data("estado");
+                        if (estado == "1" ||  estado == "2") {
+                            $(".draggable_cola").draggable("option", "revert", "invalid");
+                            $(".draggable_cola").data("estado", "4");
+                            console.log($(".draggable_cola").data("estado"));
+                            console.log($(".draggable_cola").data("idc"));
+                            var idc = $(".draggable_cola").data("idc");
+                            acancelar(idc);
+                        } else {
+                            $(".draggable_cola").draggable("option", "revert", "valid");
+                        }
+                    }
+                });
+                $("#finalizado").droppable({
+                    drop: function (event, ui) {
+                        var estado = $(".draggable_cola").data("estado");
+                        if (estado == "1" || estado == "2") {
+                            $(".draggable_cola").draggable("option", "revert", "invalid");
+                            $(".draggable_cola").data("estado", "5");
+                            console.log($(".draggable_cola").data("estado"));
+                            console.log($(".draggable_cola").data("idc"));
+                            var idc = $(".draggable_cola").data("idc");
+                            afinalizar(idc);
+                        } else {
+                            $(".draggable_cola").draggable("option", "revert", "valid");
+                        }
+                    }
+                });
+            });
+
+            function aprocesar(idc) {
+                $.ajax({
+                    type: "post",
+                    dataType: "html",
+                    url: "TareasControllers",
+                    data: {action: 'aprocesar', id: idc},
+                    success: function (data) {
+                        window.location.assign("TareasControllers");
+                    }
+                })
+            }
+
+            function asuspender(idc) {
+                $.ajax({
+                    type: "post",
+                    dataType: "html",
+                    url: "TareasControllers",
+                    data: {action: 'asuspender', id: idc},
+                    success: function (data) {
+                        window.location.assign("TareasControllers");
+                    }
+                })
+            }
+            function acancelar(idc) {
+                $.ajax({
+                    type: "post",
+                    dataType: "html",
+                    url: "TareasControllers",
+                    data: {action: 'acancelar', id: idc},
+                    success: function (data) {
+                        window.location.assign("TareasControllers");
+                    }
+                })
+            }
+            function afinalizar(idc) {
+                $.ajax({
+                    type: "post",
+                    dataType: "html",
+                    url: "TareasControllers",
+                    data: {action: 'afinalizar', id: idc},
+                    success: function (data) {
+                          window.location.assign("TareasControllers");
+                    }
+                })
+            }
+        </script>
     </head>
     <body>
         <div id="header">
@@ -127,7 +259,7 @@
                     out.println("<div class='cajaPequena draggable_cola' data-estado='" + rows.get(i).getEstado() + "' data-idc='" + rows.get(i).getId() + "'>");
                     out.println("<label><b>Tarea #" + rows.get(i).getId() + "</b></label><br/><br/>");
                     out.println("<labe><b>Nombre</b></label><br/>");
-                    out.println("<label>" + rows.get(i).getNombre() + "</label><br/><br/>");
+                    out.println("<label>" + rows.get(i).getNombre() + "</label><br/>");
                     out.println("<labe><b>Descripcion</b></label><br/>");
                     out.println("<label>" + rows.get(i).getDescripcion() + "</label><br/><br/>");
                     out.println("<label><a href='TareasControllers?action=aeliminar&id=" + rows.get(i).getId() + "'> <img src='assets/ICON_DELETE.png' alt='Eliminar tarea' title='Eliminar tarea' />  </a></label>");
@@ -146,11 +278,12 @@
 
                     out.println("<div class='cajaPequena draggable_cola' data-estado='" + rows2.get(i).getEstado() + "' data-idc='" + rows2.get(i).getId() + "'>");
                     out.println("<label><b>Tarea #" + rows2.get(i).getId() + "</b></label><br/><br/>");
+                    out.println("<labe><b>Nombre</b></label><br/>");
+                    out.println("<label>" + rows2.get(i).getNombre() + "</label><br/>");
+                    out.println("<labe><b>Descripcion</b></label><br/>");
                     out.println("<label>" + rows2.get(i).getDescripcion() + "</label><br/>");
-                    //out.println("<label>" + rows.get(i).getEstado() + "</label><br/>");
                     out.println("<labe><b>Inicio</b></label><br/>");
                     out.println("<label>" + rows2.get(i).getInicio() + "</label><br/>");
-                    //out.println("<label>" + rows.get(i).getFin() + "</label><br/>");
                     out.println("<labe><b>Responsable</b></label><br/>");
                     out.println("<label>" + rows2.get(i).getResponsable() + "</label><br/><br/>");
 
@@ -167,11 +300,12 @@
 
                     out.println("<div class='cajaPequena draggable_cola' data-estado='" + rows3.get(i).getEstado() + "' data-idc='" + rows3.get(i).getId() + "'>");
                     out.println("<label><b>Tarea #" + rows3.get(i).getId() + "</b></label><br/><br/>");
+                    out.println("<labe><b>Nombre</b></label><br/>");
+                    out.println("<label>" + rows3.get(i).getNombre() + "</label><br/>");
+                    out.println("<labe><b>Descripcion</b></label><br/>");
                     out.println("<label>" + rows3.get(i).getDescripcion() + "</label><br/>");
-                    //out.println("<label>" + rows.get(i).getEstado() + "</label><br/>");
                     out.println("<labe><b>Inicio</b></label><br/>");
                     out.println("<label>" + rows3.get(i).getInicio() + "</label><br/>");
-                    //out.println("<label>" + rows.get(i).getFin() + "</label><br/>");
                     out.println("<labe><b>Responsable</b></label><br/>");
                     out.println("<label>" + rows3.get(i).getResponsable() + "</label><br/><br/>");
 
@@ -188,11 +322,12 @@
 
                     out.println("<div class='cajaPequena draggable_cola' data-estado='" + rows4.get(i).getEstado() + "' data-idc='" + rows4.get(i).getId() + "'>");
                     out.println("<label><b>Tarea #" + rows4.get(i).getId() + "</b></label><br/><br/>");
+                    out.println("<labe><b>Nombre</b></label><br/>");
+                    out.println("<label>" + rows4.get(i).getNombre() + "</label><br/>");
+                    out.println("<labe><b>Descripcion</b></label><br/>");
                     out.println("<label>" + rows4.get(i).getDescripcion() + "</label><br/>");
-                    //out.println("<label>" + rows.get(i).getEstado() + "</label><br/>");
                     out.println("<labe><b>Inicio</b></label><br/>");
                     out.println("<label>" + rows4.get(i).getInicio() + "</label><br/>");
-                    //out.println("<label>" + rows.get(i).getFin() + "</label><br/>");
                     out.println("<labe><b>Responsable</b></label><br/>");
                     out.println("<label>" + rows4.get(i).getResponsable() + "</label><br/><br/>");
 
@@ -217,7 +352,7 @@
                     out.println("<label>" + rows5.get(i).getFin() + "</label><br/>");
                     out.println("<labe><b>Responsable</b></label><br/>");
                     out.println("<label>" + rows5.get(i).getResponsable() + "</label><br/><br/>");
-                    //out.println("<label><a href='TareasControllers?action=aeliminar&id=" + rows5.get(i).getId() + "'>Eliminar</a></label>");
+                    out.println("<label><a href='TareasControllers?action=aeliminar&id=" + rows5.get(i).getId() + "'> <img src='assets/ICON_DELETE.png' alt='Eliminar tarea' title='Eliminar tarea' />  </a></label>");
 
                     out.println("</div>");
                 }

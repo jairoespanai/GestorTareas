@@ -88,7 +88,43 @@ public class TareasControllers extends HttpServlet {
             TareasEntities tarea = new TareasEntities();
             tarea.setId(id);
             tarea.setFin(fin);
+            tarea.setEstado(5);
+            TareasModels taream = new TareasModels();
+            if (taream.afinalizar(tarea)) {
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("msjerror.jsp").forward(request, response);
+            }
+        }else if (action.equals("asuspender")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Date date = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String fin = dateFormat.format(date); 
+            //System.out.println(fin);                   
+            //String responsable = "Jairo España";
+
+            TareasEntities tarea = new TareasEntities();
+            tarea.setId(id);
+            tarea.setFin(fin);
             tarea.setEstado(3);
+            TareasModels taream = new TareasModels();
+            if (taream.afinalizar(tarea)) {
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("msjerror.jsp").forward(request, response);
+            }
+        }else if (action.equals("acancelar")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Date date = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String fin = dateFormat.format(date); 
+            //System.out.println(fin);                   
+            //String responsable = "Jairo España";
+
+            TareasEntities tarea = new TareasEntities();
+            tarea.setId(id);
+            tarea.setFin(fin);
+            tarea.setEstado(4);
             TareasModels taream = new TareasModels();
             if (taream.afinalizar(tarea)) {
                 request.getRequestDispatcher("index.jsp").forward(request, response);
