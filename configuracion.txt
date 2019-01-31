@@ -1,0 +1,20 @@
+la base de  datos se hizo en mysql
+usuario =  root
+password = admin
+en el archivo conexion.java
+
+
+SQL (DML)
+Trazabilida
+- "INSERT INTO tareas (descripcion, estado, inicio, fin, responsable) VALUES ('" + tarea.getDescripcion() + "', 1, " + tarea.getInicio() + ", " + tarea.getFin() + ", '" + tarea.getResponsable() + "')"
+- "UPDATE tareas SET inicio = '"+tarea.getInicio()+"', estado = "+tarea.getEstado()+", responsable = '"+tarea.getResponsable()+"' WHERE id = "+tarea.getId()+" "
+
+
+
+URL
+http://localhost:8080/GestorTareas/ desde el servidor de netbeans
+
+
+
+Librerias
+MySQL JDBC Driver 5.1.23
