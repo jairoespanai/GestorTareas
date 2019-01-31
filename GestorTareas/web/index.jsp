@@ -69,7 +69,7 @@
                 margin-top:10px;	
             }
             .cajaPequena{
-                width: 300px; 
+                width: 200px; 
                 border: 1px #000 solid; 
                 min-height: 100px;
                 margin: 5px;
@@ -126,9 +126,12 @@
                 for (int i = 0; i < rows.size(); i++) {
                     out.println("<div class='cajaPequena draggable_cola' data-estado='" + rows.get(i).getEstado() + "' data-idc='" + rows.get(i).getId() + "'>");
                     out.println("<label><b>Tarea #" + rows.get(i).getId() + "</b></label><br/><br/>");
+                    out.println("<labe><b>Nombre</b></label><br/>");
+                    out.println("<label>" + rows.get(i).getNombre() + "</label><br/><br/>");
+                    out.println("<labe><b>Descripcion</b></label><br/>");
                     out.println("<label>" + rows.get(i).getDescripcion() + "</label><br/><br/>");
+                    out.println("<label><a href='TareasControllers?action=aeliminar&id=" + rows.get(i).getId() + "'> <img src='assets/ICON_DELETE.png' alt='Eliminar tarea' title='Eliminar tarea' />  </a></label>");
 
-                    out.println("<label><a href='TareasControllers?action=aprocesar&id=" + rows.get(i).getId() + "'>Procesar</a></label>");
                     out.println("</div>");
                 }
             %>

@@ -129,7 +129,7 @@ public class TareasModels {
                 while (rs.next()) {
                     TareasEntities row = new TareasEntities();
                     row.setId(Integer.parseInt(rs.getString("id")));
-                    row.setDescripcion(rs.getString("nombre"));
+                    row.setNombre(rs.getString("nombre"));
                     row.setDescripcion(rs.getString("descripcion"));
                     row.setEstado(Integer.parseInt(rs.getString("estado")));
                     row.setInicio(rs.getString("inicio"));
